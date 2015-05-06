@@ -1,7 +1,8 @@
 function nn = dbnunfoldtonn(dbn, outputsize)
 %DBNUNFOLDTONN Unfolds a DBN to a NN
-%   outputsize是你的目标输出label，比如在MINST就是10，DBN只负责学习feature  
-%   或者说初始化Weight，是一个unsupervised learning，最后的supervised还得靠NN 
+%   outputsize is the 'label' layer. In the case of MNIST, the outputsize is 10.
+%   DBN is only used for feature learning or for initializing weight of NN.
+%
 %   dbnunfoldtonn(dbn, outputsize ) returns the unfolded dbn with a final
 %   layer of size outputsize added.
     if(exist('outputsize','var'))
@@ -9,9 +10,9 @@ function nn = dbnunfoldtonn(dbn, outputsize)
     else
         size = [dbn.sizes];
     end
-    nn = nnsetup(size);
-    %把每一层展开后的Weight拿去初始化NN的Weight  
-    %注意dbn.rbm{i}.c拿去初始化了bias项的值  
+    nn = nnsetup(size); 
+    
+    % use RBM's weight to initialize NN's weight
     for i = 1 : numel(dbn.rbm)
         nn.W{i} = [dbn.rbm{i}.c dbn.rbm{i}.W];
     end

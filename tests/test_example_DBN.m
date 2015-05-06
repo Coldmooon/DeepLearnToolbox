@@ -20,6 +20,7 @@ figure; visualize(dbn.rbm{1}.W');   %  Visualize the RBM weights
 %%  ex2 train a 100-100 hidden unit DBN and use its weights to initialize a NN
 rand('state',0)
 %train dbn
+% dbn.sizes = [100 100] means there are two hidden layers each of which has 100 hidden units;
 dbn.sizes = [100 100];
 opts.numepochs =   1;
 opts.batchsize = 100;
@@ -28,7 +29,7 @@ opts.alpha     =   1;
 dbn = dbnsetup(dbn, train_x, opts);
 dbn = dbntrain(dbn, train_x, opts);
 
-% DBN的每一层训练完成后自然还要把参数传递给一个大的NN，这就是这个函数的作用
+% After training RBMs layer by layer, send RBMs' parameters to NN
 %unfold dbn to nn
 nn = dbnunfoldtonn(dbn, 10);
 nn.activation_function = 'sigm';
