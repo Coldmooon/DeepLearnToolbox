@@ -28,6 +28,7 @@ opts.alpha     =   1;
 dbn = dbnsetup(dbn, train_x, opts);
 dbn = dbntrain(dbn, train_x, opts);
 
+% DBN的每一层训练完成后自然还要把参数传递给一个大的NN，这就是这个函数的作用
 %unfold dbn to nn
 nn = dbnunfoldtonn(dbn, 10);
 nn.activation_function = 'sigm';

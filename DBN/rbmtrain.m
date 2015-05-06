@@ -6,7 +6,7 @@ function rbm = rbmtrain(rbm, x, opts)
     
     assert(rem(numbatches, 1) == 0, 'numbatches not integer');
 
-    for i = 1 : opts.numepochs
+    for i = 1 : opts.numepochs % 迭代次数
         kk = randperm(m);
         err = 0;
         for l = 1 : numbatches
@@ -19,7 +19,8 @@ function rbm = rbmtrain(rbm, x, opts)
 
             c1 = h1' * v1;
             c2 = h2' * v2;
-
+            % 关于momentum，请参看Hinton的《A Practical Guide to Training Restricted Boltzmann Machines》  
+            % 它的作用是记录下以前的更新方向，并与现在的方向结合下，跟有可能加快学习的速度  
             rbm.vW = rbm.momentum * rbm.vW + rbm.alpha * (c1 - c2)     / opts.batchsize;
             rbm.vb = rbm.momentum * rbm.vb + rbm.alpha * sum(v1 - v2)' / opts.batchsize;
             rbm.vc = rbm.momentum * rbm.vc + rbm.alpha * sum(h1 - h2)' / opts.batchsize;
